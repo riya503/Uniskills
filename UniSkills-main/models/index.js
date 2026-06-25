@@ -1,0 +1,16 @@
+const sequelize = require('../config/db');
+const User = require('./User');
+const Skill = require('./Skill');
+const Session = require('./Session');
+const Message = require('./Message');
+User.hasMany(Skill, { foreignKey: 'mentorId', as: 'publishedSkills' });
+Skill.belongsTo(User, { foreignKey: 'mentorId', as: 'mentor' });
+User.hasMany(Session, { foreignKey: 'mentorId', as: 'mentoringSessions' });
+Session.belongsTo(User, { foreignKey: 'mentorId', as: 'mentor' });
+User.hasMany(Session, { foreignKey: 'studentId', as: 'learningSessions' });
+Session.belongsTo(User, { foreignKey: 'studentId', as: 'student' });
+User.hasMany(Message, { foreignKey: 'senderId', as: 'sentMessages' });
+Message.belongsTo(User, { foreignKey: 'senderId', as: 'sender' });
+User.hasMany(Message, { foreignKey: 'receiverId', as: 'receivedMessages' });
+Message.belongsTo(User, { foreignKey: 'receiverId', as: 'receiver' });
+module.exports = { sequelize, User, Skill, Session, Message };
